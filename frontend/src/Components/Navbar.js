@@ -33,6 +33,7 @@ export default function Navbar() {
           {[
             { to: '/',         label: 'Home' },
             { to: '/services', label: 'Services' },
+            { to: '/catalog',  label: 'Catalogue' },
             { to: '/about',    label: 'About Us' },
             { to: '/contact',  label: 'Contact' },
           ].map(({ to, label }) => (
@@ -52,8 +53,8 @@ export default function Navbar() {
           <li>
             <div className="nav-brochure-group">
               <a
-                href="/brochures/New Design Type with Price - 2025.pdf"
-                download="New Design Type with Price - 2025.pdf"
+                href="/brochures/SuperLaserIndia_Catalogue_2026.pdf"
+                download="SuperLaserIndia_Catalogue_2026.pdf"
                 className="nav-brochure-btn"
                 onClick={closeMenu}
                 title="Download Awards & Trophies Catalogue 2026"
@@ -62,8 +63,8 @@ export default function Navbar() {
                 Brochure 2026
               </a>
               <a
-                href="/brochures/2026_ProductCatalog.pdf"
-                download="2026_ProductCatalog.pdf"
+                href="/brochures/SuperLaserIndia_ProductCatalog.pdf"
+                download="SuperLaserIndia_ProductCatalog.pdf"
                 className="nav-brochure-btn"
                 onClick={closeMenu}
                 title="Download Full Product Catalogue"

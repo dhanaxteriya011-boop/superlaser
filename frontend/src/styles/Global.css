@@ -123,43 +123,9 @@ ul, ol { list-style: none; }
 }
 .divider.left { margin: 1.2rem 0; }
 
-/* ── BUTTONS ── */
-.btn-primary {
-  display: inline-flex; align-items: center; gap: 0.5rem;
-  background: linear-gradient(135deg, var(--gold), var(--gold-deep));
-  color: #fff;
-  font-weight: 600;
-  font-size: 0.9rem;
-  padding: 0.85rem 2rem;
-  border-radius: 50px;
-  border: none;
-  transition: var(--transition);
-  box-shadow: var(--shadow-gold);
-  letter-spacing: 0.3px;
-}
-.btn-primary:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 14px 38px rgba(201,150,42,0.42);
-  background: linear-gradient(135deg, var(--gold-lt), var(--gold));
-}
-
-.btn-outline {
-  display: inline-flex; align-items: center; gap: 0.5rem;
-  background: transparent;
-  color: var(--gold-deep);
-  font-weight: 600;
-  font-size: 0.9rem;
-  padding: 0.82rem 2rem;
-  border-radius: 50px;
-  border: 1.5px solid var(--gold-line);
-  transition: var(--transition);
-}
-.btn-outline:hover {
-  background: var(--gold-dim);
-  border-color: var(--gold);
-  color: var(--gold);
-  transform: translateY(-2px);
-}
+/* ── BUTTONS — defined per-page in Home.css / Services.css etc. ── */
+/* Base cursor reset */
+button { cursor: pointer; font-family: 'DM Sans', sans-serif; }
 
 .btn-ghost {
   background: none; border: none;

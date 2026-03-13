@@ -3,9 +3,30 @@ import { useNavigate } from 'react-router-dom'
 import '../styles/Home.css'
 
 const HERO_SLIDES = [
-  { line1: 'Crafting Excellence,', line2: 'One Trophy at a Time', tag: '25+ Years · Chennai\'s Finest' },
-  { line1: 'Laser Precision,', line2: 'Timeless Recognition', tag: 'Acrylic · Crystal · Metal Awards' },
-  { line1: 'Bulk Orders,', line2: 'Premium Quality Delivered', tag: 'Sports · Corporate · Academic Events' },
+  {
+    img: '/images/2026_ProductCatalog_page-0001.jpg',
+    fallback: '/images/2026_ProductCatalog_page-0001.jpg',
+    tag: '25+ Years · Chennai\'s Finest',
+    line1: 'Crafting Excellence,',
+    line2: 'One Trophy at a Time',
+    sub: 'Star & Figurine Trophies — Series 705–707',
+  },
+  {
+    img: '/images/2026_ProductCatalog_page-0018.jpg',
+    fallback: '/images/2026_ProductCatalog_page-0018.jpg',
+    tag: 'Acrylic · Crystal · Metal Awards',
+    line1: 'Laser Precision,',
+    line2: 'Timeless Recognition',
+    sub: 'Acrylic Frame Awards — Series 703–704',
+  },
+  {
+    img: '/images/2026_ProductCatalog_page-0001.jpg',
+    fallback: '/images/2026_ProductCatalog_page-0001.jpg',
+    tag: 'Sports · Corporate · Academic Events',
+    line1: 'Bulk Orders,',
+    line2: 'Premium Quality Delivered',
+    sub: 'Wooden Block Trophies — Series 105–107',
+  },
 ]
 
 const SERVICES = [
@@ -25,12 +46,9 @@ const WHY = [
 ]
 
 const GALLERY = [
-  { emoji: '🏆', label: 'Star Trophies',     color: '#C9962A' },
-  { emoji: '🥇', label: 'Acrylic Awards',    color: '#5B9BD5' },
-  { emoji: '🔮', label: 'Crystal Plaques',   color: '#47C0C0' },
-  { emoji: '🎖️', label: 'Corporate Shields', color: '#C65151' },
-  { emoji: '🎗️', label: 'Medal Sets',        color: '#8AAD3B' },
-  { emoji: '🪧', label: 'Name Boards',       color: '#9B6CC9' },
+  { img: '/images/trophy-42.jpg', label: 'Star & Figurine Trophies', sub: 'Trophy 705–707 Series', tag: 'Bestseller' },
+  { img: '/images/trophy-43.jpg', label: 'Acrylic Frame Awards',      sub: 'Trophy 703–704 Series', tag: 'Corporate' },
+  { img: '/images/trophy-53.jpg', label: 'Wooden Block Trophies',     sub: 'Trophy 105–107 Series', tag: 'Premium' },
 ]
 
 const CLIENTS = ['TATA', 'IBM', 'BSNL', 'Anna University', 'IIT Madras', 'Chennai FC', 'NCC India', 'CBSE Schools', 'Apollo Hospitals', 'TVS Group', 'BHEL', 'Railways']
@@ -53,54 +71,91 @@ function useReveal() {
 // ── Hero ─────────────────────────────────────────────────────
 function Hero() {
   const [slide, setSlide] = useState(0)
+  const [prevSlide, setPrevSlide] = useState(null)
+  const [transitioning, setTransitioning] = useState(false)
   const navigate = useNavigate()
+  const n = HERO_SLIDES.length
+
+  const goTo = (idx) => {
+    if (transitioning || idx === slide) return
+    setPrevSlide(slide)
+    setTransitioning(true)
+    setSlide(idx)
+    setTimeout(() => { setPrevSlide(null); setTransitioning(false) }, 900)
+  }
 
   useEffect(() => {
-    const t = setInterval(() => setSlide(p => (p + 1) % HERO_SLIDES.length), 5000)
+    const t = setInterval(() => goTo((slide + 1) % n), 5500)
     return () => clearInterval(t)
-  }, [])
+  }, [slide, transitioning])
 
-  const particles = Array.from({ length: 18 }, (_, i) => ({
-    left: `${(i * 5.5) % 100}%`,
-    top: `${(i * 11) % 100}%`,
-    dur: `${3 + (i % 3)}s`,
-    del: `${(i * 0.4) % 5}s`,
-  }))
+  const cur = HERO_SLIDES[slide]
 
   return (
-    <section className="hero">
+    <section className="hero hero-bg-carousel">
+
+      {/* Background image layers */}
+      {HERO_SLIDES.map((s, i) => (
+        <div
+          key={i}
+          className={`hero-bg-layer ${i === slide ? 'active' : ''} ${i === prevSlide ? 'prev' : ''}`}
+          style={{ backgroundImage: `url(${s.fallback || s.img})` }}
+        />
+      ))}
+
+      {/* Dark gradient overlay so text is readable */}
+      <div className="hero-bg-overlay" />
+
+      {/* Particle dots */}
       <div className="hero-particles">
-        {particles.map((p, i) => (
-          <span key={i} style={{ left: p.left, top: p.top, '--dur': p.dur, '--del': p.del }} />
+        {Array.from({ length: 14 }, (_, i) => (
+          <span key={i} style={{
+            left: `${(i * 7.2) % 100}%`,
+            top: `${(i * 13) % 100}%`,
+            '--dur': `${3 + (i % 3)}s`,
+            '--del': `${(i * 0.45) % 5}s`
+          }} />
         ))}
       </div>
 
-      <div className="hero-container">
-        <div className="hero-content">
-          <div className="hero-badge-anim" key={`tag-${slide}`}>
-            <span className="hero-badge">⭐ {HERO_SLIDES[slide].tag}</span>
+      {/* Content */}
+      <div className="hero-container hero-container-full">
+        <div className="hero-content hero-content-center" key={`content-${slide}`}>
+
+          {/* Tag badge */}
+          <div className="hero-badge-anim">
+            <span className="hero-badge hero-badge-light">⭐ {cur.tag}</span>
           </div>
 
-          <h1 className="hero-headline" key={`h-${slide}`}>
-            <span>{HERO_SLIDES[slide].line1}</span>
-            <em className="gold-grad">{HERO_SLIDES[slide].line2}</em>
+          {/* Headline */}
+          <h1 className="hero-headline hero-headline-light">
+            <span>{cur.line1}</span>
+            <em className="hero-em-gold">{cur.line2}</em>
           </h1>
 
-          <p className="hero-desc">
+          {/* Sub-label (product category) */}
+          <div className="hero-product-label">
+            <span className="hero-product-dot" />
+            {cur.sub}
+          </div>
+
+          <p className="hero-desc hero-desc-light">
             Chennai's most trusted award manufacturer. From gleaming sports trophies to
             premium corporate mementos — laser-crafted with passion since 1999.
           </p>
 
+          {/* Buttons */}
           <div className="hero-btns">
-            <button className="btn-primary" onClick={() => navigate('/services')}>
-              Explore Collection →
+            <button className="btn-primary" onClick={() => navigate('/catalog')}>
+              Browse Catalogue →
             </button>
-            <button className="btn-outline" onClick={() => navigate('/contact')}>
+            <button className="btn-outline btn-outline-light" onClick={() => navigate('/contact')}>
               Get Free Quote
             </button>
           </div>
 
-          <div className="hero-stats">
+          {/* Stats */}
+          <div className="hero-stats hero-stats-light">
             {[['25+','Years'],['50K+','Awards'],['1000+','Clients'],['4.9★','Rating']].map(([n, l]) => (
               <div key={l} className="stat-mini">
                 <span className="hero-stat-num">{n}</span>
@@ -109,27 +164,20 @@ function Hero() {
             ))}
           </div>
         </div>
-
-        <div className="hero-visual">
-          <div className="hero-orb">
-            <div className="orb-glow" />
-            <div className="orb-ring r1" />
-            <div className="orb-ring r2" />
-            <div className="hero-trophy-card">
-              <span className="hero-trophy-emoji">🏆</span>
-              <span className="hero-trophy-label">Premium Awards</span>
-            </div>
-            <div className="orb-badge b1"><div className="orb-badge-dot" />New Arrivals 2026</div>
-            <div className="orb-badge b2"><div className="orb-badge-dot" />Bulk Orders ✓</div>
-            <div className="orb-badge b3"><div className="orb-badge-dot" />Since 1999</div>
-          </div>
-          <div className="hero-slide-dots">
-            {HERO_SLIDES.map((_, i) => (
-              <button key={i} className={`hero-dot${i === slide ? ' active' : ''}`} onClick={() => setSlide(i)} />
-            ))}
-          </div>
-        </div>
       </div>
+
+      {/* Slide controls — bottom centre */}
+      <div className="hero-controls">
+        <button className="hero-ctrl-arrow" onClick={() => goTo((slide - 1 + n) % n)}>&#8592;</button>
+        <div className="hero-dots-row">
+          {HERO_SLIDES.map((_, i) => (
+            <button key={i} className={`hero-dot${i === slide ? ' active' : ''}`} onClick={() => goTo(i)} />
+          ))}
+        </div>
+        <button className="hero-ctrl-arrow" onClick={() => goTo((slide + 1) % n)}>&#8594;</button>
+        <span className="hero-slide-counter">{String(slide + 1).padStart(2,'0')} / {String(n).padStart(2,'0')}</span>
+      </div>
+
     </section>
   )
 }
@@ -287,19 +335,29 @@ function ClientsTicker() {
 function GalleryCarousel() {
   const [idx, setIdx] = useState(0)
   const n = GALLERY.length
+  const navigate = useNavigate()
+  const [ref, visible] = useReveal()
+
   useEffect(() => {
-    const t = setInterval(() => setIdx(p => (p + 1) % n), 2800)
+    const t = setInterval(() => setIdx(p => (p + 1) % n), 3500)
     return () => clearInterval(t)
   }, [n])
 
+  const prev = () => setIdx(p => (p - 1 + n) % n)
+  const next = () => setIdx(p => (p + 1) % n)
+
   return (
-    <section className="section gallery-carousel">
+    <section className="section gallery-carousel" ref={ref}>
       <div className="sec-header">
         <span className="sec-tag">Showcase</span>
         <h2 className="sec-title">Craftsmanship <span className="gold-grad">In Action</span></h2>
         <div className="divider" />
       </div>
-      <div className="carousel-view">
+
+      <div className="carousel-view" style={{ opacity: visible ? 1 : 0, transition: 'opacity 0.7s ease' }}>
+        <button className="car-arrow car-arrow-left" onClick={prev} aria-label="Previous">&#8592;</button>
+        <button className="car-arrow car-arrow-right" onClick={next} aria-label="Next">&#8594;</button>
+
         <div className="carousel-track-3d">
           {GALLERY.map((item, i) => {
             const pos = (i - idx + n) % n
@@ -308,14 +366,34 @@ function GalleryCarousel() {
             if (pos === 1) cls += ' next'
             if (pos === n - 1) cls += ' prev'
             return (
-              <div key={i} className={cls} style={{ '--accent': item.color }}>
-                <span className="car-emoji-v2">{item.emoji}</span>
-                <div className="car-accent-bar" />
-                <span className="car-label-v2">{item.label}</span>
+              <div key={i} className={cls}>
+                <div className="car-img-wrap">
+                  <img src={item.img} alt={item.label} className="car-img" />
+                  <span className="car-tag-badge">{item.tag}</span>
+                </div>
+                <div className="car-info">
+                  <span className="car-label-v2">{item.label}</span>
+                  <span className="car-sub">{item.sub}</span>
+                </div>
               </div>
             )
           })}
         </div>
+
+        <div className="car-dots">
+          {GALLERY.map((_, i) => (
+            <button key={i} className={'car-dot' + (i === idx ? ' active' : '')} onClick={() => setIdx(i)} />
+          ))}
+        </div>
+      </div>
+
+      <div className="carousel-cta">
+        <button className="btn-catalog-anim" onClick={() => navigate('/catalog')}>
+          <span className="btn-catalog-shine" />
+          <span className="btn-catalog-ico">📖</span>
+          View Full Catalogue
+          <span className="btn-catalog-arrow">→</span>
+        </button>
       </div>
     </section>
   )
@@ -326,12 +404,28 @@ function CTAStrip() {
   const navigate = useNavigate()
   return (
     <section className="cta-section">
+      <div className="cta-floating-orb orb-l" />
+      <div className="cta-floating-orb orb-r" />
       <div className="cta-content">
+        <div className="cta-badge">✦ Premium Award Manufacturer ✦</div>
         <h2>Elevate Your Next <span className="gold-grad">Ceremony</span></h2>
         <p>Get in touch for custom designs, bulk pricing, and rapid delivery timelines.</p>
         <div className="cta-btns">
-          <button className="btn-primary" onClick={() => navigate('/contact')}>Request Free Quote</button>
-          <button className="btn-outline" onClick={() => navigate('/services')}>View Catalog</button>
+          <button className="btn-cta-primary" onClick={() => navigate('/contact')}>
+            <span className="btn-cta-shine" />
+            <span>🎯 Request Free Quote</span>
+            <span className="btn-cta-arrow">→</span>
+          </button>
+          <button className="btn-cta-secondary" onClick={() => navigate('/catalog')}>
+            <span className="btn-cta-ico">📋</span>
+            View Catalogue
+          </button>
+        </div>
+        <div className="cta-trust-row">
+          <span>✓ No minimum order</span>
+          <span>✓ 48hr turnaround</span>
+          <span>✓ GST invoice</span>
+          <span>✓ Pan-India delivery</span>
         </div>
       </div>
     </section>

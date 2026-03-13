@@ -180,3 +180,96 @@
   .pricing-card.featured { transform: scale(1); margin-top: 20px; }
   .process-grid-new { gap: 30px; }
 }
+/* ── Capabilities Strip ── */
+.capabilities-strip {
+  background: linear-gradient(145deg, #2C1F0A 0%, #5A3E1B 50%, #3E2A0D 100%);
+  padding: 70px 7%;
+  position: relative; overflow: hidden;
+}
+.capabilities-strip::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, rgba(201,150,42,0.1) 0%, transparent 65%);
+}
+.capabilities-strip .sec-title  { color: #fff !important; }
+.capabilities-strip .sec-tag    { color: rgba(201,150,42,0.9) !important; background: rgba(201,150,42,0.12) !important; border-color: rgba(201,150,42,0.3) !important; }
+.capabilities-strip .title-underline { opacity: 0.6; }
+.cap-inner { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; }
+
+.cap-grid {
+  display: grid; grid-template-columns: repeat(6, 1fr);
+  gap: 18px;
+}
+.cap-card {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(201,150,42,0.2);
+  border-radius: 18px; padding: 28px 16px;
+  text-align: center;
+  transition: all 0.32s ease;
+  backdrop-filter: blur(4px);
+}
+.cap-card:hover {
+  background: rgba(201,150,42,0.1);
+  border-color: rgba(201,150,42,0.45);
+  transform: translateY(-4px);
+}
+.cap-ico   { font-size: 1.8rem; display: block; margin-bottom: 12px; }
+.cap-stat  { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700; color: #E8BA50; line-height: 1; margin-bottom: 6px; }
+.cap-label { font-size: 0.75rem; color: rgba(255,255,255,0.58); text-transform: uppercase; letter-spacing: 1px; }
+
+/* ── Step icon circle ── */
+.step-ico-circle {
+  width: 54px; height: 54px;
+  background: linear-gradient(135deg, #C9962A, #8E6D1F);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 14px;
+  font-size: 1.4rem;
+  box-shadow: 0 6px 20px rgba(201,150,42,0.3);
+  transition: transform 0.3s ease;
+}
+.step-card:hover .step-ico-circle { transform: scale(1.1) rotate(-6deg); }
+
+/* ── Catalogue CTA button on Services page ── */
+.svc-catalog-btn {
+  position: relative; overflow: hidden;
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 16px 40px;
+  background: linear-gradient(135deg, #C9962A 0%, #E8BA50 50%, #C9962A 100%);
+  background-size: 200% 100%;
+  color: #fff; border: none; border-radius: 50px;
+  font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 700;
+  cursor: pointer; letter-spacing: 0.3px;
+  box-shadow: 0 8px 28px rgba(201,150,42,0.35);
+  animation: gradShift 3.5s ease-in-out infinite;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.svc-catalog-btn:hover { transform: translateY(-3px); box-shadow: 0 16px 42px rgba(201,150,42,0.5); }
+.svc-catalog-shine {
+  position: absolute; top: 0; left: -75%; width: 50%; height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.32), transparent);
+  animation: shine 2.8s infinite;
+}
+.svc-catalog-arrow { display: inline-block; transition: transform 0.3s ease; }
+.svc-catalog-btn:hover .svc-catalog-arrow { transform: translateX(5px); }
+
+.btn-svc-outline {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 15px 36px;
+  background: transparent; border: 1.5px solid rgba(201,150,42,0.4);
+  color: #8E6D1F; border-radius: 50px;
+  font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 600;
+  cursor: pointer; transition: all 0.32s ease;
+}
+.btn-svc-outline:hover {
+  background: rgba(201,150,42,0.08); border-color: #C9962A;
+  transform: translateY(-2px); box-shadow: 0 6px 20px rgba(201,150,42,0.16);
+}
+
+/* Responsive */
+@media (max-width: 1100px) {
+  .cap-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 640px) {
+  .cap-grid { grid-template-columns: repeat(2, 1fr); }
+  .services-grid-new { grid-template-columns: 1fr; }
+}
