@@ -54,27 +54,35 @@ function Lightbox({ item, onClose, onPrev, onNext }) {
   return (
     <div className="lb-overlay" onClick={onClose}>
       <div className="lb-box" onClick={e => e.stopPropagation()}>
-        <button className="lb-close" onClick={onClose}>✕</button>
-        <button className="lb-arrow lb-prev" onClick={onPrev}>&#8592;</button>
-        <button className="lb-arrow lb-next" onClick={onNext}>&#8594;</button>
 
-        <div className="lb-img-wrap">
-          <img src={item.img} alt={item.name} className="lb-img" />
-        </div>
+        {/* Close — floats ABOVE the card */}
+        <button className="lb-close" onClick={onClose} title="Close (Esc)">✕</button>
 
-        <div className="lb-info">
-          <div className="lb-meta">
-            <span className="lb-cat-badge">
-              {CATEGORY_ICONS[item.category]} {item.category}
-            </span>
-            <span className="lb-page">Page {item.id} / 54</span>
+        {/* Arrows — sit outside the card on left/right */}
+        <button className="lb-arrow lb-prev" onClick={onPrev} title="Previous">&#8592;</button>
+        <button className="lb-arrow lb-next" onClick={onNext} title="Next">&#8594;</button>
+
+        {/* Scrollable card */}
+        <div className="lb-card">
+          <div className="lb-img-wrap">
+            <img src={item.img} alt={item.name} className="lb-img" />
           </div>
-          <h3 className="lb-title">{item.name}</h3>
-          <button className="lb-enquire" onClick={() => navigate('/contact')}>
-            <span>Enquire About This Product</span>
-            <span>→</span>
-          </button>
+
+          <div className="lb-info">
+            <div className="lb-meta">
+              <span className="lb-cat-badge">
+                {CATEGORY_ICONS[item.category]} {item.category}
+              </span>
+              <span className="lb-page">Page {item.id} / 54</span>
+            </div>
+            <h3 className="lb-title">{item.name}</h3>
+            <button className="lb-enquire" onClick={() => navigate('/contact')}>
+              <span>Enquire About This Product</span>
+              <span className="lb-enq-arrow">→</span>
+            </button>
+          </div>
         </div>
+
       </div>
     </div>
   )
@@ -104,8 +112,17 @@ export default function Catalog() {
     return list
   }, [activeCategory, search])
 
-  const openLightbox = idx => { setLightbox(idx); document.body.style.overflow = 'hidden' }
-  const closeLightbox = () => { setLightbox(null); document.body.style.overflow = '' }
+  const openLightbox  = idx => setLightbox(idx)
+  const closeLightbox = () => setLightbox(null)
+
+  // Lock body scroll when lightbox open — ALWAYS restores on unmount/close
+  useEffect(() => {
+    if (lightbox !== null) {
+      const prev = document.body.style.overflow
+      document.body.style.overflow = 'hidden'
+      return () => { document.body.style.overflow = prev || '' }
+    }
+  }, [lightbox])
   const prevItem = () => setLightbox(p => (p - 1 + filtered.length) % filtered.length)
   const nextItem = () => setLightbox(p => (p + 1) % filtered.length)
 
